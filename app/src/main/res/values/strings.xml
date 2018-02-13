@@ -1,0 +1,14 @@
+<resources>
+    <string name="app_name">HW2</string>
+    <string name="red_value">255</string>
+    <string name="green_value">255</string>
+    <string name="blue_value">255</string>
+    <string name="red">"Red: "</string>
+    <string name="green">"Green: "</string>
+    <string name="blue">"Blue: "</string>
+    <string name="button_randomize">Randomize</string>
+    <string name="RB_hair">Hair</string>
+    <string name="RB_eyes">Eyes</string>
+    <string name="RB_skin">Skin</string>
+
+</resources>
