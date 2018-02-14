@@ -204,7 +204,7 @@
 
             <TextView
                 android:id="@+id/spin_instructions"
-                android:layout_width="0dp"
+                android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:gravity="center"
@@ -217,18 +217,26 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:gravity="center" />
+                android:spinnerMode="dropdown"
+                android:entries="@array/hair_style"/>
 
             <Space
-                android:layout_width="50dp"
-                android:layout_height="match_parent" />
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight=".5" />
 
             <Button
                 android:id="@+id/buttonRANDOMIZE"
                 android:layout_width="wrap_content"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical|center_horizontal|center"
                 android:layout_weight="1"
                 android:text="@string/button_randomize" />
+
+            <Space
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight=".5" />
 
         </LinearLayout>
 

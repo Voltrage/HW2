@@ -11,4 +11,12 @@
     <string name="RB_eyes">Eyes</string>
     <string name="RB_skin">Skin</string>
 
+
+    <string-array name="hair_style">
+        <item>"Bowl Cut"</item>
+        <item>"Afro"</item>
+        <item>"Flat Top"</item>
+        <item>"Mohawk"</item>
+    </string-array>
+
 </resources>

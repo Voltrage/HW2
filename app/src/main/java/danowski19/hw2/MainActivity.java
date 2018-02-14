@@ -53,16 +53,6 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         //spinner
         style_spinner = (Spinner) findViewById(R.id.spinnerSELECT);
 
-//        //Event handler class
-//        ListenerClass event = new ListenerClass(face);
-//        event.addBtn(randomize);
-//        event.addSB(red_bar);
-//        event.addSB(green_bar);
-//        event.addSB(blue_bar);
-//        event.addTV(red_val);
-//        event.addTV(green_val);
-//        event.addTV(blue_val);
-
         //link each widget to the event handler class
         randomizeBtn.setOnClickListener(this);
         attrib_RB.setOnCheckedChangeListener(this);
@@ -112,7 +102,13 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
      */
     private void updateSettingsFromFaceValues() {
 
-        int useThisColorRGB[] = {0,0,0};
+        //
+        //Problem: couldn't get spinner to change
+        //Solution: I asked and Stelios answered
+        //
+        style_spinner.setSelection(face.getHairStyle());
+
+        int useThisColorRGB[] = {0, 0, 0};
 
         //get current values from isntance of "face"
         switch (attrib_RB.getCheckedRadioButtonId()) {
@@ -135,6 +131,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         blue_bar.setProgress(useThisColorRGB[2]);
         blue_val.setText("" + blue_bar.getProgress());
 
+
     }
 
 
@@ -154,7 +151,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                 break;
         }
 
-            switch (seekBar.getId()) {
+        switch (seekBar.getId()) {
             case R.id.seekBarRED:
                 red_val.setText("" + progress);
                 break;
@@ -179,7 +176,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         //dont care
     }
 
-//radioButtons
+    //radioButtons
     @Override
     public void onCheckedChanged(RadioGroup group, @IdRes int checkedId) {
         if (group.getId() == R.id.radioGroup_ATTRIBUTE) {
@@ -199,7 +196,6 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
     @Override
     public void onNothingSelected(AdapterView<?> parent) {
-
     }
 }
 
