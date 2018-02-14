@@ -160,11 +160,11 @@
             </LinearLayout>
 
             <RadioGroup
-                android:id="radioGroup_ATTRIBUTE"
+                android:id="@+id/radioGroup_ATTRIBUTE"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:checkedButton="@+id/radioButton_EYES"
+                android:checkedButton="@+id/radioButton_SKIN"
                 android:orientation="vertical">
 
                 <RadioButton

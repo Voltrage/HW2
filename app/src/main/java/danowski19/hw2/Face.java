@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.Path;
 import android.util.AttributeSet;
 import android.view.SurfaceView;
 
@@ -15,11 +16,11 @@ import java.util.Random;
 
 public class Face extends SurfaceView {
 
-    private static int skinColor = 0xff000000;
-    private static int eyeColor = 0xff000000;
-    private static int hairColor = 0xff000000;
-    private static int hairStyle = 0xff000000;
-    private static int style = 0;
+   private static int skinColor = 0xff000000;
+   private static int eyeColor = 0xff000000;
+   private static int hairColor = 0xff000000;
+   private static int hairStyle = 0;
+   private static int style = 0;
 
     private Random rand_gen = new Random();
 
@@ -60,23 +61,40 @@ public class Face extends SurfaceView {
      * getter methods
      * @return
      */
-    public static int getSkinColor() {
-        return skinColor;
+    public int[] getColorRGB(int skin_eye_hair) {
+
+        int useThisColor = 0xff000000;
+
+        switch(skin_eye_hair){
+            case 0: //skin
+                useThisColor = skinColor;
+                break;
+            case 1: //eye
+                useThisColor = eyeColor;
+                break;
+            default: //hair
+                useThisColor = hairColor;
+                break;
+        }
+
+        int[] result = { getRed(useThisColor), getGreen(useThisColor), getBlue(useThisColor) };
+        return result;
     }
 
-    public static int getEyeColor() {
-        return eyeColor;
+    /**
+     * screening vales
+     * @param color
+     * @return
+     */
+    public int getRed(int color){
+        return ( color & 0x00ff0000 ) >> 16;
     }
-
-    public static int getHairColor() {
-        return hairColor;
+    public int getGreen(int color){
+        return ( color & 0x0000ff00 ) >> 8;
     }
-
-    public static int getHairStyle() {
-        return hairStyle;
+    public int getBlue(int color){
+        return color & 0x000000ff;
     }
-
-
 
     /**
      * setter methods
@@ -85,18 +103,32 @@ public class Face extends SurfaceView {
      * @param G
      * @param B
      */
-    public static void setSkinColor(int R, int G, int B) {
+    public void setSkinColor(int R, int G, int B) {
         skinColor = Color.rgb(R, G, B);
+        postInvalidate();
     }
 
-    public static void setEyeColor(int R, int G, int B) {
+    public void setEyeColor(int R, int G, int B) {
         eyeColor = Color.rgb(R, G, B);
+        postInvalidate();
     }
 
-    public static void setHairColor(int R, int G, int B) {
+    public void setHairColor(int R, int G, int B) {
         hairColor = Color.rgb(R, G, B);
+        postInvalidate();
     }
 
+    public void setHairStyle(int style){
+        hairStyle = style;
+        postInvalidate();
+    }
+
+
+    /**
+     * Helper method to transform Color objects to Paint objects
+     * @param color
+     * @return
+     */
     public Paint toPaint(int color) {
         Paint x = new Paint();
         x.setColor(color);
@@ -108,6 +140,9 @@ public class Face extends SurfaceView {
      */
     public void randomize() {
 
+        //random hair
+        setHairStyle(rand_gen.nextInt(4));
+
         /** External Citation  Date:     2/10/2018
          * Problem:  I need to only select skin tones in RGB
          * Resource:
@@ -117,28 +152,37 @@ public class Face extends SurfaceView {
          */
 
         //randomly generate skin tone with 255 >= R > G > B >= 0
-        int R = rand_gen.nextInt(255) + 1;
-        int G = rand_gen.nextInt(R);
-        int B = rand_gen.nextInt(G);
-//        this.skinColor = Color.rgb(R, G, B);
-        setSkinColor(R, G, B);
+        int Red = rand_gen.nextInt(255) + 1;
+        int Gre = rand_gen.nextInt(Red);
+        int Blu = rand_gen.nextInt(Gre);
+        setSkinColor(Red, Gre, Blu);
 
         //randomly sets the eye color to a shade of blue, green, or brown
-        int blue_green_or_brown = rand_gen.nextInt(3);
-        switch (blue_green_or_brown) {
-            case 0:
-                setEyeColor(0, rand_gen.nextInt(10) * 25, 200 + rand_gen.nextInt(50));
+        switch (rand_gen.nextInt(3)) {
+            case 0: //blue
+                Red = 0;
+                Gre = rand_gen.nextInt(10) * 25;
+                Blu =  200 + rand_gen.nextInt(50);
                 break;
-            case 1:
-                setEyeColor(rand_gen.nextInt(100), 150 + rand_gen.nextInt(50) * 2, rand_gen.nextInt(50));
+            case 1: //green
+                Red = rand_gen.nextInt(100);
+                Gre = 150 + rand_gen.nextInt(50) * 2;
+                Blu = rand_gen.nextInt(50);
                 break;
-            case 2:
-                setEyeColor(100 + rand_gen.nextInt(50), 50 + rand_gen.nextInt(50), 0);
+            default: //brown
+                Red = 100 + rand_gen.nextInt(50);
+                Gre = 50 + rand_gen.nextInt(50);
+                Blu = 0;
                 break;
         }
+        setEyeColor(Red, Gre, Blu);
+
 
         //randomly set hair color to a shade of brown
-        setHairColor(100 + rand_gen.nextInt(50), 50 + rand_gen.nextInt(50), rand_gen.nextInt(20));
+        Red = rand_gen.nextInt(255);
+        Gre = rand_gen.nextInt(255);
+        Blu = rand_gen.nextInt(255);
+        setHairColor(Red, Gre, Blu);
 
 
         //view has changed and needs to be redrawn
@@ -152,39 +196,53 @@ public class Face extends SurfaceView {
         int width = canvas.getWidth();
         int height = canvas.getHeight();
 
-
-//        Paint skinPaint = new Paint();
-//        skinPaint.setColor(skinColor);
-        canvas.drawOval(Math.round( (float) width * 1 / 4 ), Math.round( (float) height * 3 / 10), Math.round( width * (float) 3 / 4 ),  height -80, toPaint(skinColor));
-
-
-        drawEye(canvas, Math.round( (float) width / 2 ) - 240, 800, Math.round( (float) width / 2 ) - 140 , 900, toPaint(eyeColor));
-        drawEye(canvas, Math.round( (float) width / 2 ) + 140 , 800, Math.round( (float) width / 2 ) + 240 , 900, toPaint(eyeColor));
+        drawHair(canvas);
 
 
     }
 
 
-    public void drawHair() {
+    //https://stackoverflow.com/questions/20544668/how-to-draw-filled-triangle-on-android-canvas
 
-        switch (style) {
+    public void drawHair(Canvas canvas) {
 
-            case 1:
+        int width = canvas.getWidth();
+        int height = canvas.getHeight();
+
+        switch (hairStyle) {
+
+            case 0://bowl cut
+                canvas.drawRect(width/2-500, height/2, width/2+500, height/2+500, toPaint(hairColor));
+            case 1://afro
+                canvas.drawCircle(width/2, height/2, 500, toPaint(hairColor));
+                break;
+            case 2://flat top
+                canvas.drawRect((float) width * 1 / 3 , Math.round( (float) height * 3 / 10)-50, Math.round( width * (float) 2 / 3 ),  Math.round( (float) height * 4 / 10)+40, toPaint(hairColor));
+                break;
+
+            case 3://mohawk
+                Path path = new Path();
+//                path.setFillType(Path.FillType.EVEN_ODD);
+                path.lineTo((float) width * 1 / 3 , Math.round( (float) height * 3 / 10)-50);
+                path.lineTo(height/5, width/2);
+                path.lineTo(Math.round( width * (float) 2 / 3 ),  Math.round( (float) height * 4 / 10)+40);
+                path.close();
+
+                canvas.drawPath(path, toPaint(hairColor));
 
                 break;
-            case 2:
-
-                break;
-
-            case 3:
-
-                break;
-
-            default:
-
-                break;
-
         }
+
+        //draw head
+        canvas.drawOval(Math.round( (float) width * 1 / 4 ), Math.round( (float) height * 3 / 10), Math.round( width * (float) 3 / 4 ),  height -80, toPaint(skinColor));
+
+        //draw eyes
+        drawEye(canvas, Math.round( (float) width / 2 ) - 240, 800, Math.round( (float) width / 2 ) - 140 , 900, toPaint(eyeColor));
+        drawEye(canvas, Math.round( (float) width / 2 ) + 140 , 800, Math.round( (float) width / 2 ) + 240 , 900, toPaint(eyeColor));
+
+        //draw last hair segment over forehead
+        canvas.drawArc((float) width * 1 / 3 , Math.round( (float) height * 3 / 10)-10, Math.round( width * (float) 2 / 3 ),  Math.round( (float) height * 4 / 10)+60, (float) 0, (float) 360, true, toPaint(hairColor));
+
 
     }
 
