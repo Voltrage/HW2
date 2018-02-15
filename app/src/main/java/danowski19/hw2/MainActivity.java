@@ -14,7 +14,7 @@ import android.widget.TextView;
 
 /**
  * Created by Luke on 2/10/2018.
- *
+ *  Meant to be run on a Pixel C with API 25.1.1 in vertical format
  * @author Luke Danowski
  */
 
