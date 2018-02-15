@@ -12,6 +12,7 @@ import java.util.Random;
 
 /**
  * Created by Luke on 2/10/2018.
+ * @author Luke Danowski
  */
 
 public class Face extends SurfaceView {
@@ -20,7 +21,6 @@ public class Face extends SurfaceView {
     private static int eyeColor = 0xff000000;
     private static int hairColor = 0xff000000;
     private static int hairStyle = 0;
-    private static int style = 0;
 
     private Random rand_gen = new Random();
 
@@ -58,13 +58,14 @@ public class Face extends SurfaceView {
     }
 
     /**
-     * getter methods
+     * getter method used to get the color being changed.
      *
-     * @return
+     * @param skin_eye_hair
+     * @return an array in [R,G,B] format
      */
     public int[] getColorRGB(int skin_eye_hair) {
 
-        int useThisColor = 0xff000000;
+        int useThisColor;
 
         switch (skin_eye_hair) {
             case 0: //skin
@@ -78,8 +79,7 @@ public class Face extends SurfaceView {
                 break;
         }
 
-        int[] result = {getRed(useThisColor), getGreen(useThisColor), getBlue(useThisColor)};
-        return result;
+        return new int[]{getRed(useThisColor), getGreen(useThisColor), getBlue(useThisColor)};
     }
 
     public int getHairStyle() {
@@ -163,8 +163,8 @@ public class Face extends SurfaceView {
 
         //randomly generate skin tone with 255 >= R > G > B >= 0
         int Red = rand_gen.nextInt(255) + 1;
-        int Gre = rand_gen.nextInt(Red);
-        int Blu = rand_gen.nextInt(Gre);
+        int Gre = (rand_gen.nextInt(Red) + rand_gen.nextInt(Red)) >> 1;
+        int Blu = (rand_gen.nextInt(Gre) + rand_gen.nextInt(Gre)) >> 1;
         setSkinColor(Red, Gre, Blu);
 
         //randomly sets the eye color to a shade of blue, green, or brown
@@ -205,6 +205,7 @@ public class Face extends SurfaceView {
         int width = canvas.getWidth();
         int height = canvas.getHeight();
 
+        //draw based on
         switch (hairStyle) {
 
             case 0://bowl cut
@@ -218,9 +219,11 @@ public class Face extends SurfaceView {
 
             case 3://mohawk
 
-
-                //https://stackoverflow.com/questions/20544668/how-to-draw-filled-triangle-on-android-canvas
-
+/** External Citation  Date:     2/13/2018
+ * Problem:  I needed to draw a triangle
+ * Resource: https://stackoverflow.com/questions/20544668/how-to-draw-filled-triangle-on-android-canvas
+ * Solution: I used some code to start my path.
+ */
                 Path path = new Path();
                 path.setFillType(Path.FillType.EVEN_ODD);
                 path.lineTo(width / 2 - 266, height / 2 - 230);
@@ -240,18 +243,17 @@ public class Face extends SurfaceView {
         canvas.drawOval(Math.round((float) width * 1 / 4), Math.round((float) height * 3 / 10), Math.round(width * (float) 3 / 4), height - 80, toPaint(skinColor));
 
         //draw eyes
-        drawEye(canvas, Math.round((float) width / 2) - 240, 800, Math.round((float) width / 2) - 140, 900);
-        drawEye(canvas, Math.round((float) width / 2) + 140, 800, Math.round((float) width / 2) + 240, 900);
+        drawEye(canvas, Math.round((float) width / 2) - 240, 800, Math.round((float) width / 2) - 120, 920);
+        drawEye(canvas, Math.round((float) width / 2) + 120, 780, Math.round((float) width / 2) + 240, 900);
 
         //draw last hair segment over forehead
-        canvas.drawArc((float) width * 1 / 3, Math.round((float) height * 3 / 10) - 10, Math.round(width * (float) 2 / 3), Math.round((float) height * 4 / 10) + 60, (float) 0, (float) 360, true, toPaint(hairColor));
+        canvas.drawOval((float) width * 1 / 3, Math.round((float) height * 3 / 10) - 10, Math.round(width * (float) 2 / 3), Math.round((float) height * 4 / 10) + 60, toPaint(hairColor));
 
-        
+        //draw mouth
+        canvas.drawArc(width / 2 - 60, height / 2 + 300, width / 2 + 60, height / 2 + 500, 0, 180, true, toPaint(Color.BLACK));
 
 
     }
-
-
 
 
     public void drawEye(Canvas canvas, int left, int top, int right, int bottom) {        //draw black eyelashes by painting axial lines starting at outer edge of length radius/10 over an 180deg arc.

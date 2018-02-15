@@ -10,9 +10,10 @@
     <string name="RB_hair">Hair</string>
     <string name="RB_eyes">Eyes</string>
     <string name="RB_skin">Skin</string>
+    <string name="rgb_instructions">"Change the Red, Green, and Blue components of the attribute selected below:"</string>
+    <string name="hair_instructions">"Select Hair: "</string>
 
-
-    <string-array name="hair_style">
+    <string-array name="hair_style_list">
         <item>"Bowl Cut"</item>
         <item>"Afro"</item>
         <item>"Flat Top"</item>
