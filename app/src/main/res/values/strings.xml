@@ -14,7 +14,7 @@
     <string name="hair_instructions">"Select Hair: "</string>
 
     <string-array name="hair_style_list">
-        <item>"Bowl Cut"</item>
+        <item>"Regular"</item>
         <item>"Afro"</item>
         <item>"Flat Top"</item>
         <item>"Mohawk"</item>

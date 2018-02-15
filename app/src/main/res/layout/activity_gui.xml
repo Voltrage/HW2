@@ -218,7 +218,7 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:spinnerMode="dropdown"
-                android:entries="@array/hair_style"/>
+                android:entries="@array/hair_style_list"/>
 
             <Space
                 android:layout_width="wrap_content"
